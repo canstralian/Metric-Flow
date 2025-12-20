@@ -10,7 +10,7 @@ Thank you for your interest in contributing to Metric-Flow! This document provid
 
 3. **Clone and setup**: 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/Metric-Flow.git
+   git clone https://github.com/your-username/Metric-Flow.git
    cd Metric-Flow
    npm install
    ```
