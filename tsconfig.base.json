@@ -12,5 +12,5 @@
     "baseUrl": ".",
     "types": ["node"]
   },
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts"]
+  "exclude": ["node_modules", "build", "dist"]
 }
