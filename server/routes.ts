@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { setupAuth, registerAuthRoutes } from "./replit_integrations/auth";
 import { api, errorSchemas } from "@shared/routes";
 import { z } from "zod";
+import { getCoinPrice, getMultipleCoinPrices, getTrendingCoins, getGlobalMarketData } from "./coingecko";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -12,6 +13,66 @@ export async function registerRoutes(
   // Setup Replit Auth
   await setupAuth(app);
   registerAuthRoutes(app);
+
+  // CoinGecko Live Price Routes
+  app.get("/api/prices/coin/:id", async (req, res) => {
+    try {
+      const price = await getCoinPrice(req.params.id);
+      // Store in database for historical tracking
+      await storage.createMetric({
+        type: "price",
+        value: price.current_price.toString(),
+        symbol: `${price.symbol}-USD`,
+        source: "coingecko",
+        metadata: {
+          name: price.name,
+          change24h: price.price_change_percentage_24h,
+          high24h: price.high_24h,
+          low24h: price.low_24h,
+          marketCap: price.market_cap,
+          volume24h: price.total_volume,
+        },
+      });
+      res.json(price);
+    } catch (error) {
+      console.error("Error fetching price:", error);
+      res.status(500).json({ message: "Failed to fetch price data" });
+    }
+  });
+
+  app.get("/api/prices/multiple", async (req, res) => {
+    try {
+      const ids = (req.query.ids as string)?.split(",") || [];
+      if (ids.length === 0) {
+        return res.status(400).json({ message: "No coin IDs provided" });
+      }
+      const prices = await getMultipleCoinPrices(ids);
+      res.json(prices);
+    } catch (error) {
+      console.error("Error fetching multiple prices:", error);
+      res.status(500).json({ message: "Failed to fetch price data" });
+    }
+  });
+
+  app.get("/api/prices/trending", async (req, res) => {
+    try {
+      const trending = await getTrendingCoins();
+      res.json(trending);
+    } catch (error) {
+      console.error("Error fetching trending:", error);
+      res.status(500).json({ message: "Failed to fetch trending data" });
+    }
+  });
+
+  app.get("/api/prices/global", async (req, res) => {
+    try {
+      const global = await getGlobalMarketData();
+      res.json(global);
+    } catch (error) {
+      console.error("Error fetching global data:", error);
+      res.status(500).json({ message: "Failed to fetch global data" });
+    }
+  });
 
   // Metrics Routes
   app.get(api.metrics.list.path, async (req, res) => {
