@@ -32,9 +32,20 @@ A real-time cryptocurrency price tracking dashboard with live price data via Coi
 ### 3. Dashboard Components
 - **Home Page:** Live BTC/ETH prices, trending coins grid, 24h volume, market cap rank
 - **Metrics Display:** Real-time price cards with 24h change % and trend indicators
-- **Trending Section:** Top 4 trending coins with score and BTC price
+- **Trending Section:** Top 8 trending coins with score and BTC price
 
-### 4. Database Schema
+### 4. Mobile Navigation
+- **Hamburger Menu:** Collapsible sidebar for mobile devices (< md breakpoint)
+- **Overlay:** Dark transparent overlay when sidebar is open
+- **Auto-close:** Sidebar closes when clicking overlay or navigating
+
+### 5. Search Filtering
+- **SearchBar Component:** `client/src/components/SearchBar.tsx`
+- **Keyboard Shortcut:** Cmd/Ctrl+K opens search focus
+- **Real-time Filtering:** Filters trending coins by name or symbol as user types
+- **Clear Button:** Clears search and resets to show all trending coins
+
+### 6. Database Schema
 - **metrics table:** Stores all price data with metadata (high/low/volume/etc)
 - **Automatic recording:** Each API call stores a metric record for historical analysis
 
@@ -65,11 +76,15 @@ curl http://localhost:5000/api/prices/trending
 ### Created Files
 - `server/coingecko.ts` - CoinGecko API service with caching
 - `client/src/hooks/use-prices.ts` - React Query hooks for price data
+- `client/src/components/SearchBar.tsx` - Search input with keyboard shortcut
 - `design_guidelines.md` - Full design system for crypto dashboard
 
 ### Modified Files
 - `server/routes.ts` - Added 4 new price endpoints with error handling
-- `client/src/pages/Home.tsx` - Integrated live CoinGecko prices, trending coins display
+- `client/src/pages/Home.tsx` - Live prices, trending coins, search filtering, mobile nav
+- `client/src/pages/Alerts.tsx` - Added mobile navigation support
+- `client/src/pages/Explorer.tsx` - Added mobile navigation support
+- `client/src/components/Sidebar.tsx` - Added mobile menu toggle with overlay
 
 ## Data Flow
 1. Frontend component calls React Query hook (e.g., `useCoinPrice("bitcoin")`)
