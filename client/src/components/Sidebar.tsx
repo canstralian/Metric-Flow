@@ -50,10 +50,10 @@ export function Sidebar() {
           <div className="bg-secondary/30 rounded-xl p-4">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold">
-                {user.username.charAt(0).toUpperCase()}
+                {(user.username || user.email || user.firstName || 'U').charAt(0).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{user.username}</p>
+                <p className="text-sm font-medium truncate">{user.username || user.firstName || user.email || 'User'}</p>
                 <p className="text-xs text-muted-foreground truncate">{user.email || 'No email'}</p>
               </div>
             </div>

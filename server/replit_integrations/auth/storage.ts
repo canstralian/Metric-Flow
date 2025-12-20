@@ -4,5 +4,6 @@
 // Let's redirect `authStorage` to our main `storage` instance in `server/storage.ts`
 // by overwriting `server/replit_integrations/auth/storage.ts` to re-export.
 
-import { storage } from "../../storage";
+import { storage, type IStorage } from "../../storage";
 export const authStorage = storage;
+export type IAuthStorage = IStorage;

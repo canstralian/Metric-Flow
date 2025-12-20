@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useCreateAlert } from "@/hooks/use-alerts";
+import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +22,7 @@ const alertFormSchema = z.object({
 export function CreateAlertDialog() {
   const [open, setOpen] = useState(false);
   const createAlert = useCreateAlert();
+  const { user } = useAuth();
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
@@ -33,10 +35,15 @@ export function CreateAlertDialog() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      toast({ title: "Error", description: "You must be logged in to create alerts", variant: "destructive" });
+      return;
+    }
     try {
       const validated = alertFormSchema.parse(formData);
       createAlert.mutate({
         ...validated,
+        userId: user.id,
         threshold: validated.threshold.toString() // Convert number back to string/decimal for DB
       }, {
         onSuccess: () => {
