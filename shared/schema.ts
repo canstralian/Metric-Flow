@@ -52,7 +52,7 @@ export const alerts = pgTable("alerts", {
 });
 
 // === BASE SCHEMAS ===
-export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertUserSchema = createInsertSchema(users).omit({ createdAt: true, updatedAt: true });
 export const insertMetricSchema = createInsertSchema(metrics).omit({ id: true, timestamp: true });
 export const insertAlertSchema = createInsertSchema(alerts).omit({ id: true, lastTriggeredAt: true, createdAt: true });
 
