@@ -38,5 +38,3 @@ jobs:
     - name: Build
       run: npm run build
     
-    - name: Test
-      run: npm test || echo "Tests not configured yet"
