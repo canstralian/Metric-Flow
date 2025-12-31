@@ -36,6 +36,9 @@ export default [
       "build/**",
       "*.config.js",
       "*.config.ts",
+      "client/src/**/*.js",
+      "client/src/**/*.jsx",
+      "server/**/*.js",
     ],
   },
 ];
