@@ -39,6 +39,8 @@ export default [
       "client/src/**/*.js",
       "client/src/**/*.jsx",
       "server/**/*.js",
+      "shared/**/*.js",
+      "vite.config.js",
     ],
   },
 ];
